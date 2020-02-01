@@ -1,28 +1,52 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <body>
+    <header>
+      <nav>
+        <h1>ABO Fiddler</h1>
+        <input type="file" accept=".txt,.gpc" multiple="true" v-on:change="uploadFile"/>
+      </nav>
+
+      <!-- <section> -->
+      <!-- </section> -->
+
+    </header>
+
+    <main>
+        <div v-for="file in files">
+          <AboFile :file="file"/>
+        </div>
+    </main>
+  </body>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AboFile from './components/AboFile.vue'
 
 export default {
   name: 'app',
+  data: function initData() {
+    return { files: [] }
+  },
+  methods: {
+    parseAboFile(text) {
+      const headers = [];
+      const transactions = [];
+
+      return text;
+
+      return { headers, transactions };
+    },
+    uploadFile(event) {
+      event.target.files.forEach((file) => {
+        file.text().then((text) => {
+          const parsed = this.parseAboFile(text);
+          this.files.push(parsed);
+        });
+      });
+    }
+  },
   components: {
-    HelloWorld
+    AboFile
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
